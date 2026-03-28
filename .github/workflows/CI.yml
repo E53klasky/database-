@@ -10,6 +10,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: cis4301sp26_project
+
     services:
       mariadb:
         image: mariadb:10.6
@@ -48,7 +52,7 @@ jobs:
 
       - name: Write MARIADB_CREDS.py
         run: |
-          cat > MARIADB_CREDS.py << 'EOF'
+          cat > MARIADB_CREDS.py << 'CREDS'
           DB_CONFIG = {
               "username": "testuser",
               "password": "testpassword",
@@ -56,7 +60,7 @@ jobs:
               "host": "localhost",
               "database": "tpcds_rental",
           }
-          EOF
+          CREDS
 
       - name: Generate small test CSVs for CI
         run: python generate_test_data.py
