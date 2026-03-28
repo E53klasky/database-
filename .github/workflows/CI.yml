@@ -57,7 +57,7 @@ jobs:
               "username": "testuser",
               "password": "testpassword",
               "port": 3306,
-              "host": "localhost",
+              "host": "127.0.0.1",
               "database": "tpcds_rental",
           }
           CREDS
