@@ -35,6 +35,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install MariaDB Connector/C system library
+        run: sudo apt-get install -y libmariadb-dev
+
       - name: Install Python dependencies
         run: pip install mariadb
 
@@ -54,6 +57,9 @@ jobs:
               "database": "tpcds_rental",
           }
           EOF
+
+      - name: Generate small test CSVs for CI
+        run: python generate_test_data.py
 
       - name: Set up database and load TPC-DS data
         run: python setup_db.py ./tpcds_data/
