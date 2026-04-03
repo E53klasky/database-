@@ -15,14 +15,27 @@ cur = conn.cursor()
 
 
 def _get_cur():
-    """Returns a valid cursor, reconnecting if the connection was closed."""
     global conn, cur
+    if conn is None or cur is None:
+        conn = connect(
+            user=DB_CONFIG["username"],
+            password=DB_CONFIG["password"],
+            host=DB_CONFIG["host"],
+            database=DB_CONFIG["database"],
+            port=DB_CONFIG["port"]
+        )
+        cur = conn.cursor()
+        return cur
     try:
         conn.ping()
     except Exception:
-        conn = connect(user=DB_CONFIG["username"], password=DB_CONFIG["password"],
-                       host=DB_CONFIG["host"], database=DB_CONFIG["database"],
-                       port=DB_CONFIG["port"])
+        conn = connect(
+            user=DB_CONFIG["username"],
+            password=DB_CONFIG["password"],
+            host=DB_CONFIG["host"],
+            database=DB_CONFIG["database"],
+            port=DB_CONFIG["port"]
+        )
         cur = conn.cursor()
     return cur
 
@@ -540,8 +553,9 @@ def get_filtered_waitlist(filter_attributes: Waitlist = None,
 
 
 def save_changes():
-    conn.commit()
-
+    global conn
+    if conn is not None:
+        conn.commit()
 
 def close_connection():
     global conn, cur
