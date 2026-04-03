@@ -38,7 +38,7 @@ def _get_cur():
         )
         cur = conn.cursor()
     return cur
-
+_get_cur()
 
 def add_item(new_item: Item = None):
     cur = _get_cur()
